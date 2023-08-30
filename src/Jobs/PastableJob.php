@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 
 class PastableJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, PastableLogger;
+    use Dispatchable, InteractsWithQueue, PastableLogger, Queueable;
 
     /**
      * Create a new job instance.
@@ -35,6 +35,7 @@ class PastableJob implements ShouldQueue
 
         if (empty($copyClasses) && empty($cutClasses)) {
             $this->log('No pasteable classes found.');
+
             return;
         }
 
@@ -43,23 +44,19 @@ class PastableJob implements ShouldQueue
 
         foreach ($copyClasses as $copyClass) {
             //Copy & Paste every class
-//            /** @var CopyPastable $instance */
-//            $instance = new $class;
-//            $instance->paste();
+            //            /** @var CopyPastable $instance */
+            //            $instance = new $class;
+            //            $instance->paste();
         }
 
         foreach ($cutClasses as $cutClass) {
             //Cut & Paste every class
-//            /** @var CutPastable $instance */
-//            $instance = new $class;
-//            $instance->paste();
+            //            /** @var CutPastable $instance */
+            //            $instance = new $class;
+            //            $instance->paste();
         }
     }
 
-    /**
-     * @param string $traitClass
-     * @return array
-     */
     public function getPastableClasses(string $traitClass): array
     {
         $appNamespace = Application::getInstance()->getNamespace();
@@ -68,8 +65,8 @@ class PastableJob implements ShouldQueue
             $rel = $item->getRelativePathName();
 
             return sprintf('%s%s', $appNamespace, implode('\\', explode('/', substr($rel, 0, strrpos($rel, '.')))));
-        })->filter(fn($class) => class_exists($class))
-            ->filter(fn($class) => in_array($traitClass, class_uses_recursive($class)))
+        })->filter(fn ($class) => class_exists($class))
+            ->filter(fn ($class) => in_array($traitClass, class_uses_recursive($class)))
             ->all();
     }
 }

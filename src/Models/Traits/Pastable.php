@@ -16,7 +16,6 @@ trait Pastable
     use PastableLogger;
 
     /**
-     * @return Builder
      * @throws Exception
      */
     protected function preparePastable(): Builder
@@ -24,7 +23,7 @@ trait Pastable
         //Set a limit, if no other limit has been set
         /** @var Builder $query */
         $query = tap($this->getPastableQuery(), function (Builder $query) {
-            $query->when(!$query->getQuery()->limit, function ($query) {
+            $query->when(! $query->getQuery()->limit, function ($query) {
                 $query->limit(config('pastable.chunkSize', 1000));
             });
         });
@@ -32,8 +31,8 @@ trait Pastable
         //Check the table exists
         $tableName = $this->getPastableTable();
         $this->log("Checking for target table '{$tableName}'");
-        if (!$this->createTable($query)) {
-            throw new Exception('[Pastable] Unable to find or create the target table: ' . $tableName);
+        if (! $this->createTable($query)) {
+            throw new Exception('[Pastable] Unable to find or create the target table: '.$tableName);
         }
 
         $this->log("Using pastable query '{$query->toSql()}'");
@@ -41,17 +40,13 @@ trait Pastable
         return $query;
     }
 
-    /**
-     * @param Builder $query
-     * @return bool
-     */
     protected function createTable(Builder $query): bool
     {
         $connection = $this->getPastableConnection();
         $tableName = $this->getPastableTable();
 
         //Does a target exist?
-        if (!DB::connection($connection)->table($tableName)->exists()) {
+        if (! DB::connection($connection)->table($tableName)->exists()) {
             //Should it be created?
             if (config('pastable.autoCreate', false)) {
                 //Create table

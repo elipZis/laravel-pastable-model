@@ -12,6 +12,7 @@ trait CutPastable
 
     /**
      * @return int
+     *
      * @throws Throwable
      */
     public function cutAndPaste()
@@ -37,7 +38,7 @@ trait CutPastable
             DB::commit();
         } catch (Throwable $t) {
             DB::rollBack();
-            $this->log('Error while cut-paste: ' . $t->getMessage());
+            $this->log('Error while cut-paste: '.$t->getMessage());
             throw $t;
         }
 

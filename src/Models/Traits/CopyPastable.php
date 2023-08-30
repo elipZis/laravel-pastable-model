@@ -11,6 +11,7 @@ trait CopyPastable
 
     /**
      * @return int The amount of affected rows
+     *
      * @throws Exception
      */
     public function copyAndPaste()

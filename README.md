@@ -1,11 +1,14 @@
-# Cut/Copy & Paste Laravel Eloquent model data regularly into other tables
+# Cut/Copy & Paste Laravel Eloquent models into another table
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/elipzis/laravel-pastable-model.svg?style=flat-square)](https://packagist.org/packages/elipzis/laravel-pastable-model)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/elipzis/laravel-pastable-model/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/elipzis/laravel-pastable-model/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/elipzis/laravel-pastable-model/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/elipzis/laravel-pastable-model/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/elipzis/laravel-pastable-model.svg?style=flat-square)](https://packagist.org/packages/elipzis/laravel-pastable-model)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Enable your models to regularly cut/copy and paste data into another table.
+- Cut & Paste or Copy & Paste
+- Scheduled Job to asynchronously execute in chunks
+- Store data e.g. into logging or daily tables and keep the production data clean
 
 ## Installation
 
@@ -72,6 +75,9 @@ class YourModel extends Model {
 ```
 
 `CutPastable` will cut (delete) and paste the queried data to the defined table.
+
+### Configuration
+
 
 ## Testing
 

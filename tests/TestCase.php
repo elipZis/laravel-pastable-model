@@ -2,9 +2,9 @@
 
 namespace ElipZis\Pastable\Tests;
 
+use ElipZis\Pastable\PastableServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ElipZis\Pastable\PastableServiceProvider;
 
 class TestCase extends Orchestra
 {

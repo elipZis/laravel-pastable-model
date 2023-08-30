@@ -4,7 +4,7 @@ namespace ElipZis\Pastable\Helper;
 
 use Illuminate\Support\Facades\Log;
 
-trait Logger
+trait PastableLogger
 {
     protected function log(string $message, string $level = 'debug'): void
     {

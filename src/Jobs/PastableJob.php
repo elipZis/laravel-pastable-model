@@ -28,8 +28,8 @@ class PastableJob implements ShouldQueue
      */
     public function handle(): void
     {
-        //Get all classes implementing the CopyPasteable trait
-        $classes = $this->getPasteableClasses();
+        //Get all classes implementing the CopyPastable trait
+        $classes = $this->getPastableClasses();
 
         if (empty($classes)) {
             Log::info('[CopyPasteableJob] No pasteable classes found.');
@@ -47,7 +47,7 @@ class PastableJob implements ShouldQueue
         }
     }
 
-    public function getPasteableClasses(string $traitClass = CopyPastable::class): array
+    public function getPastableClasses(string $traitClass = CopyPastable::class): array
     {
         $appNamespace = Container::getInstance()->getNamespace();
 

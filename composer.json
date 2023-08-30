@@ -1,18 +1,24 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "elipzis/laravel-pastable-model",
+    "description": "Cut/Copy & Paste Laravel Eloquent model data regularly into other tables",
     "keywords": [
-        ":vendor_name",
+        "elipZis",
         "laravel",
-        ":package_slug"
+        "laravel-pastable-model",
+        "model",
+        "eloquent",
+        "paste",
+        "copy",
+        "cut"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/elipzis/laravel-pastable-model",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
-            "role": "Developer"
+            "name": "elipZis GmbH",
+            "email": "contact@elipZis.com",
+            "role": "Developer",
+            "homepage": "https://elipZis.com"
         }
     ],
     "require": {
@@ -35,28 +41,15 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "ElipZis\\Pastable\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "ElipZis\\Pastable\\Tests\\": "tests/"
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "prepare": "@php vendor/bin/testbench package:discover --ansi",
-        "build": [
-            "@composer run prepare",
-            "@php vendor/bin/testbench workbench:build --ansi"
-        ],
-        "start": [
-            "@composer run build",
-            "@php vendor/bin/testbench serve"
-        ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",
@@ -72,11 +65,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
-            }
+                "ElipZis\\Pastable\\PastableServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

@@ -10,5 +10,4 @@ use Illuminate\Queue\InteractsWithQueue;
 class CopyPastableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
-
 }

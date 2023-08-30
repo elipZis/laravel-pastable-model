@@ -19,27 +19,25 @@ trait CopyPastable
         //Set a limit, if no other limit has been set
         /** @var Builder $query */
         $query = tap($this->pasteableQuery(), function (Builder $query) {
-            $query->when(!$query->getQuery()->limit, function ($query) {
+            $query->when(! $query->getQuery()->limit, function ($query) {
                 $query->limit(1000);
             });
         });
 
-
-        Log::debug('[CopyPasteable] Using pasteable query: ' . $query->toSql());
+        Log::debug('[CopyPasteable] Using pasteable query: '.$query->toSql());
 
         //Paste
         $affected = DB::table($tableName)->insertUsing($query->getQuery()->columns ?? [], $query);
 
-        Log::debug('[CopyPasteable] Affected rows: ' . $affected);
+        Log::debug('[CopyPasteable] Affected rows: '.$affected);
 
-//        //Then delete (only for Cutting)
-//        in_array(SoftDeletes::class, class_uses_recursive(static::class))
-//            ? $query->forceDelete()
-//            : $query->delete();
+        //        //Then delete (only for Cutting)
+        //        in_array(SoftDeletes::class, class_uses_recursive(static::class))
+        //            ? $query->forceDelete()
+        //            : $query->delete();
 
         return $affected;
     }
-
 
     public function getPasteableTable(): string
     {
@@ -48,17 +46,15 @@ trait CopyPastable
             : throw new LogicException('[CopyPasteable] Please set the `pasteableTable` or override `getPasteableTable` property!');
     }
 
-
     /**
      * Prune all prunable models in the database.
      *
-     * @param int $chunkSize
      * @return int
      */
     public function pruneAll(int $chunkSize = 1000)
     {
         $query = tap($this->prunable(), function ($query) use ($chunkSize) {
-            $query->when(!$query->getQuery()->limit, function ($query) use ($chunkSize) {
+            $query->when(! $query->getQuery()->limit, function ($query) use ($chunkSize) {
                 $query->limit($chunkSize);
             });
         });
@@ -80,8 +76,6 @@ trait CopyPastable
 
     /**
      * Get the pasteable model query.
-     *
-     * @return Builder
      */
     public function pasteableQuery(): Builder
     {

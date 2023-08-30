@@ -10,5 +10,4 @@ use Illuminate\Queue\InteractsWithQueue;
 class CutPastableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
-
 }

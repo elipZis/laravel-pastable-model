@@ -33,10 +33,11 @@ class PastableJob implements ShouldQueue
 
         if (empty($classes)) {
             Log::info('[CopyPasteableJob] No pasteable classes found.');
+
             return;
         }
 
-        Log::info('[CopyPasteableJob] Found ' . count($classes) . ' pasteable classes.');
+        Log::info('[CopyPasteableJob] Found '.count($classes).' pasteable classes.');
 
         foreach ($classes as $class) {
             //Copy & Paste every class
@@ -52,9 +53,10 @@ class PastableJob implements ShouldQueue
 
         return collect(File::allFiles(app_path()))->map(static function ($item) use ($appNamespace) {
             $rel = $item->getRelativePathName();
+
             return sprintf('%s%s', $appNamespace, implode('\\', explode('/', substr($rel, 0, strrpos($rel, '.')))));
-        })->filter(fn($class) => class_exists($class))
-            ->filter(fn($class) => in_array($traitClass, class_uses_recursive($class)))
+        })->filter(fn ($class) => class_exists($class))
+            ->filter(fn ($class) => in_array($traitClass, class_uses_recursive($class)))
             ->all();
     }
 }

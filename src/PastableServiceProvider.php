@@ -2,9 +2,9 @@
 
 namespace ElipZis\Pastable;
 
+use ElipZis\Pastable\Commands\PastableCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use ElipZis\Pastable\Commands\PastableCommand;
 
 class PastableServiceProvider extends PackageServiceProvider
 {

@@ -17,14 +17,6 @@ class PastableJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, PastableLogger;
 
     /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the job.
      */
     public function handle(): void
@@ -34,25 +26,21 @@ class PastableJob implements ShouldQueue
         $cutClasses = $this->getPastableClasses(CutPastable::class);
 
         if (empty($copyClasses) && empty($cutClasses)) {
-            $this->log('No pasteable classes found.');
+            $this->log('No pastable classes found.');
             return;
         }
 
         $count = count($copyClasses) + count($cutClasses);
-        $this->log("Found {$count} pasteable classes.");
+        $this->log("Found {$count} pastable classes.");
 
         foreach ($copyClasses as $copyClass) {
             //Copy & Paste every class
-//            /** @var CopyPastable $instance */
-//            $instance = new $class;
-//            $instance->paste();
+            CopyPastableJob::dispatch($copyClass);
         }
 
         foreach ($cutClasses as $cutClass) {
             //Cut & Paste every class
-//            /** @var CutPastable $instance */
-//            $instance = new $class;
-//            $instance->paste();
+            CutPastableJob::dispatch($cutClass);
         }
     }
 

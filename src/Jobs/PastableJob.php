@@ -29,6 +29,7 @@ class PastableJob implements ShouldQueue
 
         if (empty($copyClasses) && empty($cutClasses)) {
             $this->log('No pastable classes found.');
+
             return;
         }
 

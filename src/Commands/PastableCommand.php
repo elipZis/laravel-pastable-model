@@ -5,9 +5,6 @@ namespace ElipZis\Pastable\Commands;
 use ElipZis\Pastable\Jobs\PastableJob;
 use Illuminate\Console\Command;
 
-/**
- *
- */
 class PastableCommand extends Command
 {
     /**
@@ -20,9 +17,6 @@ class PastableCommand extends Command
      */
     public $description = 'Trigger the cut/copy & pasting of all implementing classes';
 
-    /**
-     * @return int
-     */
     public function handle(): int
     {
         PastableJob::dispatch();

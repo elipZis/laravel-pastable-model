@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\File;
 
 class PastableJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, PastableLogger;
+    use Dispatchable, InteractsWithQueue, PastableLogger, Queueable;
 
     /**
      * Execute the job.
@@ -44,10 +44,6 @@ class PastableJob implements ShouldQueue
         }
     }
 
-    /**
-     * @param string $traitClass
-     * @return array
-     */
     public function getPastableClasses(string $traitClass): array
     {
         $appNamespace = Application::getInstance()->getNamespace();
@@ -56,8 +52,8 @@ class PastableJob implements ShouldQueue
             $rel = $item->getRelativePathName();
 
             return sprintf('%s%s', $appNamespace, implode('\\', explode('/', substr($rel, 0, strrpos($rel, '.')))));
-        })->filter(fn($class) => class_exists($class))
-            ->filter(fn($class) => in_array($traitClass, class_uses_recursive($class)))
+        })->filter(fn ($class) => class_exists($class))
+            ->filter(fn ($class) => in_array($traitClass, class_uses_recursive($class)))
             ->all();
     }
 }

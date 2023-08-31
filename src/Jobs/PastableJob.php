@@ -16,7 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
  */
 class PastableJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, PastableLogger, PastableUtils;
+    use Dispatchable, InteractsWithQueue, PastableLogger, PastableUtils, Queueable;
 
     /**
      * Execute the job.

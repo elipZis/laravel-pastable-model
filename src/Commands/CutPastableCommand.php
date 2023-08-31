@@ -7,9 +7,6 @@ use ElipZis\Pastable\Jobs\CutPastableJob;
 use ElipZis\Pastable\Models\Traits\CutPastable;
 use Illuminate\Console\Command;
 
-/**
- *
- */
 class CutPastableCommand extends Command
 {
     use PastableUtils;
@@ -24,9 +21,6 @@ class CutPastableCommand extends Command
      */
     public $description = 'Trigger the cut & pasting of all implementing classes';
 
-    /**
-     * @return int
-     */
     public function handle(): int
     {
         $classes = $this->getPastableClasses(CutPastable::class);

@@ -58,7 +58,7 @@ class YourModel extends Model {
     ...
 ```
 
-To make your model cut & pastable, add the trait `CutPastable`:
+To make your model cut & pastable, add the trait `CutPastable`.
 It will cut (delete) & paste your configured query result into the target table.
 If more rows than the chunk size (limit) are affected, it will respawn its own job until completed.
 
@@ -80,7 +80,7 @@ To use any trait, you need to configure two settings:
 - the target table
 - the query to read its data from
 
-### Target table _(mandatory)_
+#### Target table _(mandatory)_
 
 You must define the target table name.
 
@@ -115,7 +115,7 @@ try to create the table from your query source.
 **It is recommended for you to create the table manually or via migration, as the automation is not fully tested and
 functional to any database system and table structure.**
 
-### Query _(mandatory)_
+#### Query _(mandatory)_
 
 You must define the query to use to read data and cut/copy & paste into the target table.
 
@@ -137,7 +137,7 @@ You can use any query that returns a `Builder` object.
 In the case of cut & paste, the default `chunkSize` is used as a limiter. You can set your own limit by
 adding `->limit()` to the query or override the configuration setting in general.
 
-### Connection _(optional)_
+#### Connection _(optional)_
 
 You can give a separate connection if you want the target table to be generated and filled in e.g. another database.
 
@@ -148,6 +148,66 @@ class YourModel extends Model {
 
     ...
     protected string $pastableConnection = 'logging';    
+    ...
+```
+
+### Run
+
+After implementation and configuration, you got three options to trigger the cut/copy & paste jobs:
+
+- Manually dispatching the jobs
+- Scheduled dispatch
+- Running a command to trigger it manually
+
+#### Scheduled
+
+The preferred way is to run the job on a schedule, configured via the Kernel, e.g. daily:
+
+```php
+namespace App\Console;
+
+...
+use ElipZis\Pastable\Jobs\PastableJob;
+...
+
+class Kernel extends ConsoleKernel
+
+    ...
+    protected function schedule(Schedule $schedule)
+    {
+        ...
+        $schedule->job(PastableJob::class)->daily();
+        ...
+    }
+    ...
+```
+
+#### Via Command
+
+You may also trigger the execution manually by using the command(s):
+
+- All cut/copy & pastable model classes: `php artisan pastable:all`
+- Only copy & pastable model classes: `php artisan pastable:copy`
+- Only cut & pastable model classes: `php artisan pastable:cut`
+
+#### Manual dispatch
+
+The final option is to trigger the job manually inside any of your functions, any logic, any application code:
+
+```php
+...
+use ElipZis\Pastable\Jobs\PastableJob;
+...
+
+class YourClass
+
+    ...
+    protected function yourFunction()
+    {
+        ...
+        PastableJob::dispatch();
+        ...
+    }
     ...
 ```
 

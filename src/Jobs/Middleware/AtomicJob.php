@@ -14,10 +14,6 @@ use Throwable;
  */
 class AtomicJob
 {
-    /**
-     * @param string $class
-     * @param int $lockTime
-     */
     public function __construct(protected string $class, protected int $lockTime = 10 * 60)
     {
     }

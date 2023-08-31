@@ -17,9 +17,6 @@ class CutPastableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, PastableLogger, Queueable, SerializesModels;
 
-    /**
-     * @param string $class
-     */
     public function __construct(protected string $class)
     {
     }
@@ -47,7 +44,7 @@ class CutPastableJob implements ShouldQueue
                 static::dispatch($this->class);
             }
         } catch (Throwable $t) {
-            $this->log('Error while cut & pasting: ' . $t->getMessage());
+            $this->log('Error while cut & pasting: '.$t->getMessage());
         }
     }
 

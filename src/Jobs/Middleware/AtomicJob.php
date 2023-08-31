@@ -14,6 +14,10 @@ use Throwable;
  */
 class AtomicJob
 {
+    /**
+     * @param string $class
+     * @param int $lockTime
+     */
     public function __construct(protected string $class, protected int $lockTime = 10 * 60)
     {
     }
@@ -21,17 +25,17 @@ class AtomicJob
     /**
      * Lock until completed
      *
-     * @param  Job  $job
-     * @param  callable  $next
+     * @param Job $job
+     * @param callable $next
      */
     public function handle($job, $next)
     {
         try {
             /** @var Lock $lock */
             /** @phpstan-ignore-next-line */
-            $lock = Cache::getStore()->lock(get_class($job).'_'.$this->class.'_lock', $this->lockTime);
+            $lock = Cache::getStore()->lock(get_class($job) . '_' . $this->class . '_lock', $this->lockTime);
 
-            if (! $lock->get()) {
+            if (!$lock->get()) {
                 $job->delete();
 
                 return;

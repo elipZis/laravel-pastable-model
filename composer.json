@@ -1,6 +1,6 @@
 {
     "name": "elipzis/laravel-pastable-model",
-    "description": "Cut/Copy & Paste Laravel Eloquent model data regularly into other tables",
+    "description": "Cut/Copy & Paste Laravel Eloquent model data into another table",
     "keywords": [
         "elipZis",
         "laravel",
@@ -9,7 +9,8 @@
         "eloquent",
         "paste",
         "copy",
-        "cut"
+        "cut",
+        "database"
     ],
     "homepage": "https://github.com/elipzis/laravel-pastable-model",
     "license": "MIT",

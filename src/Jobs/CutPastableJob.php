@@ -5,7 +5,6 @@ namespace ElipZis\Pastable\Jobs;
 use Carbon\Carbon;
 use ElipZis\Pastable\Helper\PastableLogger;
 use ElipZis\Pastable\Jobs\Middleware\AtomicJob;
-use ElipZis\Pastable\Models\Traits\CutPastable;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,6 +17,9 @@ class CutPastableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, PastableLogger, Queueable, SerializesModels;
 
+    /**
+     * @param string $class
+     */
     public function __construct(protected string $class)
     {
     }
@@ -35,7 +37,6 @@ class CutPastableJob implements ShouldQueue
         $this->log("Starting cut & pasting for class `{$this->class}` at {$now->toString()}");
 
         try {
-            /** @var CutPastable $instance */
             $instance = new $this->class;
             $affected = $instance->cutAndPaste();
 
@@ -46,7 +47,7 @@ class CutPastableJob implements ShouldQueue
                 static::dispatch($this->class);
             }
         } catch (Throwable $t) {
-            $this->log('Error while cut & pasting: '.$t->getMessage());
+            $this->log('Error while cut & pasting: ' . $t->getMessage());
         }
     }
 

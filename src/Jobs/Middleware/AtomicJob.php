@@ -28,6 +28,7 @@ class AtomicJob
     {
         try {
             /** @var Lock $lock */
+            /** @phpstan-ignore-next-line */
             $lock = Cache::getStore()->lock(get_class($job).'_'.$this->class.'_lock', $this->lockTime);
 
             if (! $lock->get()) {

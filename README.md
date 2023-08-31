@@ -6,6 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/elipzis/laravel-pastable-model.svg?style=flat-square)](https://packagist.org/packages/elipzis/laravel-pastable-model)
 
 Enable your models to regularly cut/copy and paste data into another table.
+
 - Cut & Paste or Copy & Paste
 - Scheduled Job to asynchronously execute in chunks
 - Store data e.g. into logging or daily tables and keep the production data clean
@@ -78,12 +79,20 @@ class YourModel extends Model {
 
 ### Configuration
 
-
 ## Testing
 
 ```bash
 composer test
 ```
+
+## Notes
+
+This package is heavily inspired by two incredible resources:
+
+- [Laravel Prunable](https://laravel.com/docs/10.x/eloquent#pruning-models)
+- [Flare's cleaning big tables](https://flareapp.io/blog/7-how-to-safely-delete-records-in-massive-tables-on-aws-using-laravel)
+
+Kudos and Thanks to both for the inspiration.
 
 ## Changelog
 

@@ -8,7 +8,7 @@
 Enable your models to regularly cut/copy and paste data into another table.
 
 - Cut & Paste or Copy & Paste
-- Scheduled Job to asynchronously execute in chunks
+- Scheduled Job to regularly & asynchronously execute in chunks
 - Store data e.g. into logging or daily tables and keep the production data clean
 
 ## Installation
@@ -22,7 +22,7 @@ composer require elipzis/laravel-pastable-model
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-pastable-model-config"
+php artisan vendor:publish --tag="pastable-model-config"
 ```
 
 This is the contents of the published config file:

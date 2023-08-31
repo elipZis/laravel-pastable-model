@@ -8,7 +8,7 @@ trait PastableLogger
 {
     protected function log(string $message, string $level = 'debug'): void
     {
-        if (! config('pastable.logging.enabled', false)) {
+        if (!config('pastable.logging.enabled', false)) {
             return;
         }
 

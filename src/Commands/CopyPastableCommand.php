@@ -22,7 +22,6 @@ class CopyPastableCommand extends Command
     public $description = 'Trigger the copy & pasting of all implementing classes';
 
     /**
-     * @return int
      */
     public function handle(): int
     {

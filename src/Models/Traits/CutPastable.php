@@ -2,6 +2,7 @@
 
 namespace ElipZis\Pastable\Models\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -17,18 +18,22 @@ trait CutPastable
      */
     public function cutAndPaste()
     {
-        $query = $this->preparePastable();
+        //Set a limit, if no other limit has been set
+        /** @var Builder $query */
+        $query = tap($this->getPastableQuery(), function (Builder $query) {
+            $query->when(!$query->getQuery()->limit, function ($query) {
+                $query->limit(config('pastable.chunkSize', 1000));
+            });
+        });
 
+        $query = $this->preparePastable($query);
         $connection = $this->getPastableConnection();
         $tableName = $this->getPastableTable();
 
         //Cut and Paste
-        $affected = 0;
         DB::beginTransaction();
         try {
             $affected = DB::connection($connection)->table($tableName)->insertUsing($query->getQuery()->columns ?? [], $query);
-
-            $this->log("Affected {$affected} rows");
 
             //Then delete (Cutting)
             in_array(SoftDeletes::class, class_uses_recursive(static::class))
@@ -38,7 +43,7 @@ trait CutPastable
             DB::commit();
         } catch (Throwable $t) {
             DB::rollBack();
-            $this->log('Error while cut-paste: '.$t->getMessage());
+            $this->log('Error while cut-paste: ' . $t->getMessage());
             throw $t;
         }
 

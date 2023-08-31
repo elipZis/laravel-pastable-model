@@ -34,8 +34,7 @@ class CutPastableJob implements ShouldQueue
         $this->log("Starting cut & pasting for class `{$this->class}` at {$now->toString()}");
 
         try {
-            $instance = new $this->class;
-            $affected = $instance->cutAndPaste();
+            $affected = (new $this->class)->cutAndPaste();
 
             $this->log("Cut & pasted {$affected} entries for class `{$this->class}` at {$now->toString()}");
 
@@ -44,7 +43,7 @@ class CutPastableJob implements ShouldQueue
                 static::dispatch($this->class);
             }
         } catch (Throwable $t) {
-            $this->log('Error while cut & pasting: '.$t->getMessage());
+            $this->log("Error while cut & pasting: ({$t->getLine()}): {$t->getMessage()}");
         }
     }
 

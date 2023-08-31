@@ -15,8 +15,6 @@ use Throwable;
 class AtomicJob
 {
     /**
-     * @param string $class
-     * @param int $lockTime
      */
     public function __construct(protected string $class, protected int $lockTime = 10 * 60)
     {
@@ -25,8 +23,8 @@ class AtomicJob
     /**
      * Lock until completed
      *
-     * @param Job $job
-     * @param callable $next
+     * @param  Job  $job
+     * @param  callable  $next
      */
     public function handle($job, $next)
     {

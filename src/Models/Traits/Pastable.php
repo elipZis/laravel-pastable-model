@@ -6,7 +6,6 @@ use ElipZis\Pastable\Helper\PastableLogger;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use LogicException;
 use Throwable;
@@ -18,21 +17,13 @@ trait Pastable
     /**
      * @throws Exception
      */
-    protected function preparePastable(): Builder
+    protected function preparePastable(Builder $query): Builder
     {
-        //Set a limit, if no other limit has been set
-        /** @var Builder $query */
-        $query = tap($this->getPastableQuery(), function (Builder $query) {
-            $query->when(! $query->getQuery()->limit, function ($query) {
-                $query->limit(config('pastable.chunkSize', 1000));
-            });
-        });
-
         //Check the table exists
         $tableName = $this->getPastableTable();
         $this->log("Checking for target table '{$tableName}'");
-        if (! $this->createTable($query)) {
-            throw new Exception('[Pastable] Unable to find or create the target table: '.$tableName);
+        if (!$this->createTable($query)) {
+            throw new Exception('[Pastable] Unable to find or create the target table: ' . $tableName);
         }
 
         $this->log("Using pastable query '{$query->toSql()}'");
@@ -40,25 +31,42 @@ trait Pastable
         return $query;
     }
 
+    /**
+     * Check if a table exists or is to be created
+     */
     protected function createTable(Builder $query): bool
     {
         $connection = $this->getPastableConnection();
         $tableName = $this->getPastableTable();
 
         //Does a target exist?
-        if (! DB::connection($connection)->table($tableName)->exists()) {
+        if (!Schema::connection($connection)->hasTable($tableName)) {
+            $this->log("Table `{$tableName}` does not exist");
+
             //Should it be created?
             if (config('pastable.autoCreate', false)) {
+                $this->log("Trying to create `{$tableName}` table");
+
                 //Create table
                 Schema::connection($connection)->create($tableName, function (Blueprint $table) use ($query) {
-                    $columns = $query->getColumns();
+                    $columns = $query->getQuery()->columns ?? Schema::getColumnListing(static::getTable());
 
                     foreach ($columns as $column) {
                         $type = Schema::getColumnType(static::getTable(), $column);
+
+                        //Resolve some types
+                        if (str_contains($type, 'int')) {
+                            $type = 'bigInteger'; //Always fall back to big ints to be sure
+                        } elseif ($type === 'datetime') {
+                            $type = 'dateTime';
+                        }
+
                         try {
+                            $this->log("Trying to call type function for column `{$column}` of type {$type}");
                             $table->{$type}($column);
 
                         } catch (Throwable $t) {
+                            $this->log("Failed! Trying to add column `{$column}` of type {$type}");
                             $table->addColumn($type, $column);
                         }
                     }

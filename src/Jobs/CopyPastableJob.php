@@ -4,7 +4,6 @@ namespace ElipZis\Pastable\Jobs;
 
 use Carbon\Carbon;
 use ElipZis\Pastable\Helper\PastableLogger;
-use ElipZis\Pastable\Jobs\Middleware\AtomicJob;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,25 +33,12 @@ class CopyPastableJob implements ShouldQueue
         $this->log("Starting copy & pasting for class `{$this->class}` at {$now->toString()}");
 
         try {
-            $instance = new $this->class;
-            $affected = $instance->copyAndPaste();
+            $affected = (new $this->class)->copyAndPaste();
 
             $this->log("Copy & pasted {$affected} entries for class `{$this->class}` at {$now->toString()}");
 
-            //Self-dispatch as long as there is more
-            if ($affected > 0) {
-                static::dispatch($this->class);
-            }
         } catch (Throwable $t) {
-            $this->log('Error while copy & pasting: '.$t->getMessage());
+            $this->log("Error while copy & pasting ({$t->getLine()}): {$t->getMessage()}");
         }
-    }
-
-    /**
-     * @return array<int, object>
-     */
-    public function middleware(): array
-    {
-        return [new AtomicJob($this->class)];
     }
 }

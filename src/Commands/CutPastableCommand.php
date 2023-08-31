@@ -22,7 +22,6 @@ class CutPastableCommand extends Command
     public $description = 'Trigger the cut & pasting of all implementing classes';
 
     /**
-     * @return int
      */
     public function handle(): int
     {

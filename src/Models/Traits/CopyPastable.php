@@ -16,8 +16,7 @@ trait CopyPastable
      */
     public function copyAndPaste()
     {
-        $query = $this->preparePastable();
-
+        $query = $this->preparePastable($this->getPastableQuery());
         $connection = $this->getPastableConnection();
         $tableName = $this->getPastableTable();
 

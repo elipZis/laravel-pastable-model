@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_run:
 
 jobs:
   test:
@@ -12,13 +13,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
-        php: [ 8.2, 8.1 ]
-        laravel: [ 10.* ]
+        os: [ ubuntu-latest ]
+        dependency-version: [prefer-dist]
+        php: [8.2, 8.3]
+        laravel: [10.*, 11.*]
         include:
           - laravel: 10.*
             testbench: 8.*
-            carbon: ^2.63
+          - laravel: 11.*
+            testbench: 9.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.os }}
 
@@ -40,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer update --prefer-dist --no-interaction
+          composer install --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
       - name: List Installed Dependencies
         run: composer show -D
